@@ -1,0 +1,5 @@
+def call(Map config = [:]) {
+    def scriptcontent = libraryResource "shell-scripts/test.sh"
+    writeFile file: 'test.sh', text: test
+    sh "chmod +x ./test.sh"
+}
