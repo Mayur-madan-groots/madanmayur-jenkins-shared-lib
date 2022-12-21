@@ -14,7 +14,7 @@ fi
 vpc_id=vpc-e332298b
 subnet_id=subnet-d85f5fb0
 ami_id=ami-07ffb2f4d65357b42
-instancename=alchemy-cli
+instancename=alchemy-cli2
 sgname=alchemySG-cli
 
 
@@ -85,27 +85,22 @@ pubip=`aws ec2 describe-instances  --query "Reservations[].Instances[].PublicIpA
 
 echo "we can access it using $pubip:8080"
 
-echo "termination start"
+#echo "termination start"
 
 #terminating ec2
-echo "terminating ec2 after 4mins"
-sleep 4m
-echo "terminating ec2"
-aws ec2 terminate-instances --instance-ids $(aws ec2 describe-instances --query 'Reservations[].Instances[].InstanceId' --filters "Name=tag:Name,Values=$instancename" --output text) --output text   >  /dev/null 2>&1
-echo "ec2 terminated"
+#echo "terminating ec2 after 4mins"
+#sleep 4m
+#echo "terminating ec2"
+#aws ec2 terminate-instances --instance-ids $(aws ec2 describe-instances --query 'Reservations[].Instances[].InstanceId' --filters "Name=tag:Name,Values=$instancename" --output text) --output text   >  /dev/null 2>&1
+#echo "ec2 terminated"
 
 #delete SG
-echo "5mins to delete security group"
-sleep 5m
+#echo "5mins to delete security group"
+#sleep 5m
 
-echo "deleting Security group"
+#echo "deleting Security group"
 
 #aws ec2 delete-security-group --group-name $SGname  >  /dev/null 2>&1
-aws ec2 delete-security-group --group-id $sgid >  /dev/null 2>&1
-echo "security group deleted"
-
-
-
-
-
+#aws ec2 delete-security-group --group-id $sgid >  /dev/null 2>&1
+#echo "security group deleted"
 
