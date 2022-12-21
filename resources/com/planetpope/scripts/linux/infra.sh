@@ -76,12 +76,36 @@ ssh -o StrictHostKeyChecking=no test sudo docker logs app-container
 
 
 #printing ip,id and port
-echo -e "\033[0;31m'printing instance id,public ip and allowed port"
-aws ec2 describe-instances  --filters Name=tag:Name,Values=$instancename   --query 'Reservations[*].Instances[*].{id:InstanceId,publicip:PublicIpAddress}'  --output table &&  aws ec2 describe-security-groups     --group-ids $sgid  --query "SecurityGroups[].IpPermissions[].{rule1:FromPort,rule2:ToPort}"   --output table
+#echo -e "\033[0;31m'printing instance id,public ip and allowed port"
+#aws ec2 describe-instances  --filters Name=tag:Name,Values=$instancename   --query 'Reservations[*].Instances[*].{id:InstanceId,publicip:PublicIpAddress}'  --output table &&  aws ec2 describe-security-groups     --group-ids $sgid  --query "SecurityGroups[].IpPermissions[].{rule1:FromPort,rule2:ToPort}"   --output table
 
 
 #retriving the public ip of newly created ec2
 pubip=`aws ec2 describe-instances  --query "Reservations[].Instances[].PublicIpAddress" --filters "Name=tag:Name,Values=$instancename" | sed -n 2p | tr -d \"`
 
 echo "we can access it using $pubip:8080"
+
+echo "termination start"
+
+#terminating ec2
+echo "terminating ec2 after 4mins"
+sleep 4m
+echo "terminating ec2"
+aws ec2 terminate-instances --instance-ids $(aws ec2 describe-instances --query 'Reservations[].Instances[].InstanceId' --filters "Name=tag:Name,Values=$instancename" --output text) --output text   >  /dev/null 2>&1
+echo "ec2 terminated"
+
+#delete SG
+echo "5mins to delete security group"
+sleep 5m
+
+echo "deleting Security group"
+
+aws ec2 delete-security-group --group-name $SGname  >  /dev/null 2>&1
+aws ec2 delete-security-group --group-id $sgid >  /dev/null 2>&1
+echo "security group deleted"
+
+
+
+
+
 
