@@ -100,7 +100,7 @@ sleep 5m
 
 echo "deleting Security group"
 
-aws ec2 delete-security-group --group-name $SGname  >  /dev/null 2>&1
+#aws ec2 delete-security-group --group-name $SGname  >  /dev/null 2>&1
 aws ec2 delete-security-group --group-id $sgid >  /dev/null 2>&1
 echo "security group deleted"
 
