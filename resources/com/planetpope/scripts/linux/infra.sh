@@ -61,17 +61,17 @@ echo "dockerfile build"
 
 #push aplication image to remote
 echo "pushing application image"
-ssh -o StrictHostKeyChecking=no test sudo chmod 666 /var/run/docker.sock
-sudo docker save nest-cloud-run:latest | bzip2 | pv | ssh test docker load
+ssh -o StrictHostKeyChecking=no dev sudo chmod 666 /var/run/docker.sock
+sudo docker save nest-cloud-run:latest | bzip2 | pv | ssh dev docker load
 echo "image pushed"
 
 echo "container deplyment started"
 # container deployment
-ssh -o StrictHostKeyChecking=no test sudo docker run -itd -p 8080:3000 --name=app-container  nest-cloud-run >  /dev/null 2>&1
+ssh -o StrictHostKeyChecking=no dev sudo docker run -itd -p 8080:3000 --name=app-container  nest-cloud-run >  /dev/null 2>&1
 echo "container deployment done"
 echo "wait for 1 min to get container log"
-ssh -o StrictHostKeyChecking=no test sleep 1m
-ssh -o StrictHostKeyChecking=no test sudo docker logs app-container
+ssh -o StrictHostKeyChecking=no dev sleep 1m
+ssh -o StrictHostKeyChecking=no dev sudo docker logs app-container
 
 
 
